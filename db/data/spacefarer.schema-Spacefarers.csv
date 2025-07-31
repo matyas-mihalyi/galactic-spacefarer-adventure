@@ -1,6 +1,6 @@
 ID,name,stardustCollection,wormholeNavigationSkill,originPlanet,spacesuitColor,missionStatus,department_ID,position_ID,createdAt,modifiedAt,createdBy,modifiedBy
 s1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a11,Zara Stardust,1250,8,Kepler-442b,Cosmic Blue,ACTIVE,d1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0b,p4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a04,2024-01-15T10:30:00Z,2024-01-15T10:30:00Z,system,system
-s2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a12,Kai Nebula,750,6,Mars Colony Alpha,Stellar Silver,PREPARING,d2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0c,p3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a03,2024-01-16T14:20:00Z,2024-01-16T14:20:00Z,system,system
+s2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a12,Kai Nebula,750,6,Kepler-442b,Stellar Silver,PREPARING,d2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0c,p3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a03,2024-01-16T14:20:00Z,2024-01-16T14:20:00Z,system,system
 s3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a13,Luna Voidwalker,2100,9,Proxima Centauri b,Nebula Purple,COMPLETED,d5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0f,p5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a05,2024-01-10T08:15:00Z,2024-01-20T16:45:00Z,system,system
 s4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a14,Rex Quantumheart,450,4,Europa Station,Plasma Orange,PREPARING,d3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0d,p6f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a06,2024-01-18T11:00:00Z,2024-01-18T11:00:00Z,system,system
 s5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a15,Nova Starwhisper,650,7,Titan Base,Galaxy Green,ACTIVE,d4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0e,p2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a02,2024-01-17T09:30:00Z,2024-01-19T13:20:00Z,system,system

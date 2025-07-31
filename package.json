@@ -34,9 +34,24 @@
         "users": {
           "user1": {
             "password": "password",
-            "roles": [
-              "SpacefarerAdmin"
-            ]
+            "roles": ["SpacefarerViewer"],
+            "attr": {
+              "originPlanet": "Kepler-442b"
+            }
+          },
+          "user2": {
+            "password": "password", 
+            "roles": ["SpacefarerViewer"],
+            "attr": {
+              "originPlanet": "Planet Y"
+            }
+          },
+          "admin": {
+            "password": "password",
+            "roles": ["SpacefarerAdmin"],
+            "attr": {
+              "originPlanet": "doesn't matter"
+            }
           }
         }
       }
