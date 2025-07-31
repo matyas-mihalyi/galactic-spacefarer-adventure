@@ -1,5 +1,7 @@
 using {managed} from '@sap/cds/common';
 
+namespace spacefarer.schema;
+
 entity Spacefarers : managed {
   key ID                      : UUID;
       name                    : String(100) not null;

@@ -26,5 +26,20 @@
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "user1": {
+            "password": "password",
+            "roles": [
+              "SpacefarerAdmin"
+            ]
+          }
+        }
+      }
+    }
   }
 }
