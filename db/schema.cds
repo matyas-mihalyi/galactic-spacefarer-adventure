@@ -3,38 +3,38 @@ using {managed} from '@sap/cds/common';
 namespace spacefarer.schema;
 
 entity Spacefarers : managed {
-  key ID                      : UUID;
+  key ID                      : Integer;
       name                    : String(100) not null;
-      stardustCollection      : Integer default 0;
+      collectedStardust       : Integer default 0;
       wormholeNavigationSkill : Integer @assert.range: [
         1,
         10
       ];
       originPlanet            : String(50);
-      spacesuitColor          : String(30);
+      spacesuitColor          : String(50);
       missionStatus           : MissionStatus;
 
       // Relationships
       department              : Association to Departments;
-      position                : Association to Positions;
+      rank                    : Association to Ranks;
       missions                : Composition of many Missions
                                   on missions.spacefarer = $self;
 }
 
 entity Departments {
-  key ID          : UUID;
+  key ID          : Integer;
       name        : String(100);
       galaxy      : String(50);
       spacefarers : Association to many Spacefarers
                       on spacefarers.department = $self;
 }
 
-entity Positions {
-  key ID               : UUID;
+entity Ranks {
+  key ID               : Integer;
       title            : String(100);
       requiredStardust : Integer;
       spacefarers      : Association to many Spacefarers
-                           on spacefarers.position = $self;
+                           on spacefarers.rank = $self;
 }
 
 entity Missions : managed {

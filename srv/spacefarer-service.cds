@@ -37,7 +37,7 @@ service GalacticSpacefarerService {
       to   : 'SpacefarerAdmin'
     }
   ]
-  entity Positions   as projection on schema.Positions;
+  entity Ranks       as projection on schema.Ranks;
 
   @restrict: [
     {

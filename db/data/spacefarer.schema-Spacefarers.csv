@@ -1,11 +1,6 @@
-ID,name,stardustCollection,wormholeNavigationSkill,originPlanet,spacesuitColor,missionStatus,department_ID,position_ID,createdAt,modifiedAt,createdBy,modifiedBy
-s1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a11,Zara Stardust,1250,8,Kepler-442b,Cosmic Blue,ACTIVE,d1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0b,p4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a04,2024-01-15T10:30:00Z,2024-01-15T10:30:00Z,system,system
-s2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a12,Kai Nebula,750,6,Kepler-442b,Stellar Silver,PREPARING,d2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0c,p3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a03,2024-01-16T14:20:00Z,2024-01-16T14:20:00Z,system,system
-s3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a13,Luna Voidwalker,2100,9,Proxima Centauri b,Nebula Purple,COMPLETED,d5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0f,p5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a05,2024-01-10T08:15:00Z,2024-01-20T16:45:00Z,system,system
-s4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a14,Rex Quantumheart,450,4,Europa Station,Plasma Orange,PREPARING,d3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0d,p6f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a06,2024-01-18T11:00:00Z,2024-01-18T11:00:00Z,system,system
-s5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a15,Nova Starwhisper,650,7,Titan Base,Galaxy Green,ACTIVE,d4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0e,p2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a02,2024-01-17T09:30:00Z,2024-01-19T13:20:00Z,system,system
-s6f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a16,Orion Skyforge,320,3,Ganymede Outpost,Meteorite Black,PREPARING,d2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0c,p1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a01,2024-01-19T15:45:00Z,2024-01-19T15:45:00Z,system,system
-s7f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a17,Vega Moonrider,980,5,Enceladus Colony,Aurora Pink,ACTIVE,d1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0b,p2f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a02,2024-01-12T12:10:00Z,2024-01-18T10:35:00Z,system,system
-s8f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a18,Atlas Constellation,1500,10,Callisto Mining Station,Solar Gold,COMPLETED,d4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0e,p4f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a04,2024-01-08T07:20:00Z,2024-01-22T14:50:00Z,system,system
-s9f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a19,Celeste Voidborn,220,2,Io Research Facility,Comet White,PREPARING,d3f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0d,p1f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a01,2024-01-20T16:30:00Z,2024-01-20T16:30:00Z,system,system
-s10f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a20,Phoenix Starborn,1800,7,Triton Expedition Base,Supernova Red,ACTIVE,d5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a0f,p5f47ac3-5e4a-4c87-b2c8-9f8e3d2c1a05,2024-01-14T13:40:00Z,2024-01-21T11:25:00Z,system,system
+ID;name;collectedStardust;wormholeNavigationSkill;originPlanet;spacesuitColor;missionStatus;department_ID;rank_ID
+1;Zara Nebula;150;7;Kepler-442b;Purple;ACTIVE;1;2
+2;Orion Starforge;2500;9;Proxima Centauri b;White;COMPLETED;4;4
+3;Luna Quasar;50;5;Planet Y;PREPARING;White;3;1
+4;Atlas Void;750;8;Kepler-442b;ACTIVE;Grey;2;3
+5;Nova Cosmos;5500;10;Alpha Centauri Prime;COMPLETED;Yellow;5;5

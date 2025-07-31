@@ -13,7 +13,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@cap-js/cds-typer": ">=0.1",
+    "@cap-js/cds-typer": "^0.36.0",
     "@cap-js/cds-types": "^0.13.0",
     "@cap-js/sqlite": "^2",
     "@types/node": "^22.0.0",
@@ -22,7 +22,8 @@
     "typescript": "^5"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "build": "cds build && cds-typer"
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
@@ -34,21 +35,27 @@
         "users": {
           "user1": {
             "password": "password",
-            "roles": ["SpacefarerViewer"],
+            "roles": [
+              "SpacefarerViewer"
+            ],
             "attr": {
               "originPlanet": "Kepler-442b"
             }
           },
           "user2": {
-            "password": "password", 
-            "roles": ["SpacefarerViewer"],
+            "password": "password",
+            "roles": [
+              "SpacefarerViewer"
+            ],
             "attr": {
               "originPlanet": "Planet Y"
             }
           },
           "admin": {
             "password": "password",
-            "roles": ["SpacefarerAdmin"],
+            "roles": [
+              "SpacefarerAdmin"
+            ],
             "attr": {
               "originPlanet": "doesn't matter"
             }
