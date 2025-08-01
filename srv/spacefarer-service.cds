@@ -2,6 +2,8 @@ using {spacefarer.schema as schema} from '../db/schema';
 
 @requires: 'authenticated-user'
 service GalacticSpacefarerService {
+  @odata.draft.enabled
+
   @restrict: [
     {
       grant: ['READ'],
