@@ -1,6 +1,6 @@
 ID;name;collectedStardust;wormholeNavigationSkill;originPlanet;spacesuitColor;missionStatus;department_ID;rank_ID
 1;Zara Nebula;150;7;Kepler-442b;Purple;ACTIVE;1;2
 2;Orion Starforge;2500;9;Proxima Centauri b;White;COMPLETED;4;4
-3;Luna Quasar;50;5;Planet Y;PREPARING;White;3;1
-4;Atlas Void;750;8;Kepler-442b;ACTIVE;Grey;2;3
-5;Nova Cosmos;5500;10;Alpha Centauri Prime;COMPLETED;Yellow;5;5
+3;Luna Quasar;50;5;Planet Y;White;PREPARING;3;1
+4;Atlas Void;750;8;Kepler-442b;Grey;ACTIVE;2;3
+5;Nova Cosmos;5500;10;Alpha Centauri Prime;Yellow;COMPLETED;5;5
