@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "galactic spacefarer adventure",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Create Spacefarer
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:4004/odata/v4/galactic-spacefarer/Spacefarers
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: admin
+  password: password
+}
+
+body:json {
+  {
+    "name": "James Gond",
+    "rank_ID": 4
+  }
+}
+
+settings {
+  encodeUrl: true
+}
