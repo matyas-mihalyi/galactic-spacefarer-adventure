@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "build": "cds build && cds-typer"
+    "build": "cds build && cds-typer",
+    "client:watch": "cds watch --open galactic-spacefarer-adventures-ui/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
@@ -63,5 +64,8 @@
         }
       }
     }
-  }
+  },
+  "sapux": [
+    "app/galactic-spacefarer-adventures-ui"
+  ]
 }
