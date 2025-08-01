@@ -11,33 +11,53 @@ annotate service.Spacefarers with @(
       },
       {
         $Type: 'UI.DataField',
-        Label: 'name',
+        Label: 'Name',
         Value: name,
       },
       {
         $Type: 'UI.DataField',
-        Label: 'collectedStardust',
+        Label: 'Department',
+        Value: department_ID,
+      },
+      {
+        $Type: 'UI.DataField',
+        Label: 'Rank',
+        Value: rank_ID,
+      },
+      {
+        $Type: 'UI.DataField',
+        Label: 'Collected Stardust',
         Value: collectedStardust,
       },
       {
         $Type: 'UI.DataField',
-        Label: 'wormholeNavigationSkill',
+        Label: 'Wormhole Navigation Skill',
         Value: wormholeNavigationSkill,
       },
       {
         $Type: 'UI.DataField',
-        Label: 'originPlanet',
+        Label: 'Origin Planet',
         Value: originPlanet,
       },
       {
         $Type: 'UI.DataField',
-        Label: 'spacesuitColor',
+        Label: 'Spacesuit Color',
         Value: spacesuitColor,
       },
       {
         $Type: 'UI.DataField',
-        Label: 'missionStatus',
+        Label: 'Mission Status',
         Value: missionStatus,
+      },
+    ],
+  },
+
+  UI.FieldGroup #DisplayGroup  : {
+    $Type: 'UI.FieldGroupType',
+    Data : [
+      {
+        $Type: 'UI.DataField',
+        Value: name,
       },
       {
         $Type: 'UI.DataField',
