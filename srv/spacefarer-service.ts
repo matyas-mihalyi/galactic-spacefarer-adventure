@@ -2,13 +2,42 @@ import { Rank } from "#cds-models/GalacticSpacefarerService";
 import cds from "@sap/cds";
 
 export class GalacticSpacefarerService extends cds.ApplicationService {
+  async init() {
+    const { Spacefarers } = this.entities;
+
+    this.before("CREATE", Spacefarers, this.beforeSpacefarerCreate);
+
+    this.after("CREATE", Spacefarers, async (data, req) => {
+      console.log("Spacefarer created:", data);
+    });
+
+    await super.init();
+  }
+
+  private beforeSpacefarerCreate = async (req: cds.Request) => {
+    const { collectedStardust, rank_ID, wormholeNavigationSkill } = req.data;
+
+    await this.validateAssociations(req);
+
+    if (rank_ID) {
+      await this.validateRank(collectedStardust, rank_ID);
+    } else {
+      const highestValidRank =
+        await this.findHighestValidRank(collectedStardust);
+      req.data.rank_ID = highestValidRank.ID;
+    }
+
+    if (!wormholeNavigationSkill) {
+      req.data.wormholeNavigationSkill = this.enhanceWormholeNavigationSkills();
+    }
+  };
+
   private async validateRank(collectedStardust: number, rankId: string) {
     const desiredRank = await SELECT.one.from(this.entities.Ranks)
       .where`ID = ${rankId}`;
     if (desiredRank.requiredStardust > collectedStardust) {
-      // todo how to return error responses
       throw new Error(
-        `Insufficent stardust collection for rank ${desiredRank}`,
+        `Insufficent stardust collection for rank ${desiredRank.title}`,
       );
     }
   }
@@ -19,31 +48,37 @@ export class GalacticSpacefarerService extends cds.ApplicationService {
       .orderBy`requiredStardust desc`.limit(1);
   }
 
-  private async sendEmail() {}
-
-  async init() {
-    const { Spacefarers } = this.entities;
-
-    this.before("CREATE", Spacefarers, async (req) => {
-      const { collectedStardust, rank_ID } = req.data;
-
-      if (rank_ID) {
-        await this.validateRank(collectedStardust, rank_ID);
-      } else {
-        const highestValidRank =
-          await this.findHighestValidRank(collectedStardust);
-        req.data.rank_ID = highestValidRank.ID;
-      }
-
-      console.log("Preparing spacefarer:", req.data);
-    });
-
-    // @After CREATE
-    this.after("CREATE", Spacefarers, async (data, req) => {
-      // Send notification
-      console.log("Spacefarer created:", data);
-    });
-
-    await super.init();
+  private async enhanceWormholeNavigationSkills(): Promise<number> {
+    await Promise.resolve(
+      setTimeout(() => {
+        console.log("Spacefarer completed basic wormhole naviagation training");
+      }, 3000),
+    );
+    return 1;
   }
+
+  // todo: refactor
+  private async validateAssociations(req: cds.Request) {
+    const { rank_ID, department_ID } = req.data;
+    const rank = await SELECT.one
+      .from(this.entities.Ranks)
+      .where({ ID: rank_ID });
+    if (!rank) {
+      req.reject(
+        400,
+        `Rank ${rank_ID} does not exits. Contact Admin to create it first.`,
+      );
+    }
+    const department = await SELECT.one
+      .from(this.entities.Departments)
+      .where({ ID: department_ID });
+    if (!department) {
+      req.reject(
+        400,
+        `Department ${department_ID} does not exits. Contact Admin to create it first.`,
+      );
+    }
+  }
+
+  private async sendEmail() {}
 }
