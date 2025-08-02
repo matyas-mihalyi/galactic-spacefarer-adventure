@@ -14,7 +14,6 @@ entity Spacefarers : managed {
       spacesuitColor          : String(50);
       missionStatus           : MissionStatus;
 
-      // Relationships
       department              : Association to Departments;
       rank                    : Association to Ranks;
       missions                : Composition of many Missions
