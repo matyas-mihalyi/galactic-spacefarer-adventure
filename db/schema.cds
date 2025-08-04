@@ -13,6 +13,7 @@ entity Spacefarers : managed {
       originPlanet            : String(50);
       spacesuitColor          : String(50);
       missionStatus           : MissionStatus;
+      email                   : String(100);
 
       department              : Association to Departments;
       rank                    : Association to Ranks;
@@ -23,7 +24,6 @@ entity Spacefarers : managed {
 entity Departments {
   key ID          : Integer;
       name        : String(100);
-      galaxy      : String(50);
       spacefarers : Association to many Spacefarers
                       on spacefarers.department = $self;
 }

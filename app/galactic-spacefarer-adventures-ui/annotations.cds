@@ -49,6 +49,11 @@ annotate service.Spacefarers with @(
         Label: 'Mission Status',
         Value: missionStatus,
       },
+      {
+        $Type: 'UI.DataField',
+        Label: 'Email Address',
+        Value: email,
+      },
     ],
   },
 
@@ -109,10 +114,6 @@ annotate service.Spacefarers with {
       {
         $Type            : 'Common.ValueListParameterDisplayOnly',
         ValueListProperty: 'name',
-      },
-      {
-        $Type            : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty: 'galaxy',
       },
     ],
   }

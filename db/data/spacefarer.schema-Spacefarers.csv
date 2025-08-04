@@ -1,6 +1,51 @@
-ID;name;collectedStardust;wormholeNavigationSkill;originPlanet;spacesuitColor;missionStatus;department_ID;rank_ID
-1;Zara Nebula;150;7;Kepler-442b;Purple;ACTIVE;1;2
-2;Orion Starforge;2500;9;Proxima Centauri b;White;COMPLETED;4;4
-3;Luna Quasar;50;5;Planet Y;White;PREPARING;3;1
-4;Atlas Void;750;8;Kepler-442b;Grey;ACTIVE;2;3
-5;Nova Cosmos;5500;10;Alpha Centauri Prime;Yellow;COMPLETED;5;5
+ID;name;collectedStardust;wormholeNavigationSkill;originPlanet;spacesuitColor;missionStatus;department_ID;rank_ID;email
+1;Zara Nebula;150;7;Kepler-442b;Purple;ACTIVE;1;2;zara.nebula@spaceforce.gov
+2;Orion Starforge;2500;9;Proxima Centauri b;White;COMPLETED;4;4;orion.starforge@spaceforce.gov
+3;Luna Quasar;50;5;Planet Y;White;PREPARING;3;1;luna.quasar@spaceforce.gov
+4;Atlas Void;750;8;Kepler-442b;Grey;ACTIVE;2;3;atlas.void@spaceforce.gov
+5;Nova Cosmos;5500;10;Alpha Centauri Prime;Yellow;COMPLETED;5;5;nova.cosmos@spaceforce.gov
+6;Stellar Phoenix;320;6;Proxima Centauri b;Blue;ACTIVE;1;1;stellar.phoenix@spaceforce.gov
+7;Comet Rider;1200;8;Planet Y;Red;COMPLETED;2;2;comet.rider@spaceforce.gov
+8;Galaxy Hunter;890;7;Kepler-442b;Green;PREPARING;3;3;galaxy.hunter@spaceforce.gov
+9;Meteor Storm;450;9;Alpha Centauri Prime;Black;ACTIVE;4;4;meteor.storm@spaceforce.gov
+10;Cosmic Drifter;3200;10;Proxima Centauri b;Silver;COMPLETED;5;5;cosmic.drifter@spaceforce.gov
+11;Nebula Walker;680;5;Planet Y;Orange;ACTIVE;1;1;nebula.walker@spaceforce.gov
+12;Star Chaser;1500;8;Kepler-442b;Purple;PREPARING;2;2;star.chaser@spaceforce.gov
+13;Void Sailor;230;6;Alpha Centauri Prime;White;COMPLETED;3;3;void.sailor@spaceforce.gov
+14;Quantum Leap;920;9;Proxima Centauri b;Grey;ACTIVE;4;4;quantum.leap@spaceforce.gov
+15;Solar Flare;1800;7;Planet Y;Yellow;PREPARING;5;5;solar.flare@spaceforce.gov
+16;Astro Wanderer;540;8;Kepler-442b;Blue;COMPLETED;1;1;astro.wanderer@spaceforce.gov
+17;Pulsar Beat;2100;10;Alpha Centauri Prime;Red;ACTIVE;2;2;pulsar.beat@spaceforce.gov
+18;Black Hole;760;6;Proxima Centauri b;Green;PREPARING;3;3;black.hole@spaceforce.gov
+19;Starlight Echo;1350;9;Planet Y;Black;COMPLETED;4;4;starlight.echo@spaceforce.gov
+20;Cosmic Ray;480;7;Kepler-442b;Silver;ACTIVE;5;5;cosmic.ray@spaceforce.gov
+21;Andromeda Swift;2800;8;Alpha Centauri Prime;Orange;PREPARING;1;1;andromeda.swift@spaceforce.gov
+22;Milky Way;390;5;Proxima Centauri b;Purple;COMPLETED;2;2;milky.way@spaceforce.gov
+23;Supernova Blast;1650;10;Planet Y;White;ACTIVE;3;3;supernova.blast@spaceforce.gov
+24;Warp Drive;820;6;Kepler-442b;Grey;PREPARING;4;4;warp.drive@spaceforce.gov
+25;Stardust Trail;1150;9;Alpha Centauri Prime;Yellow;COMPLETED;5;5;stardust.trail@spaceforce.gov
+26;Rocket Flight;670;7;Proxima Centauri b;Blue;ACTIVE;1;1;rocket.flight@spaceforce.gov
+27;Space Odyssey;2400;8;Planet Y;Red;PREPARING;2;2;space.odyssey@spaceforce.gov
+28;Lunar Eclipse;950;5;Kepler-442b;Green;COMPLETED;3;3;lunar.eclipse@spaceforce.gov
+29;Solar Wind;520;10;Alpha Centauri Prime;Black;ACTIVE;4;4;solar.wind@spaceforce.gov
+30;Gravity Well;1750;6;Proxima Centauri b;Silver;PREPARING;5;5;gravity.well@spaceforce.gov
+31;Ion Storm;430;9;Planet Y;Orange;COMPLETED;1;1;ion.storm@spaceforce.gov
+32;Plasma Shield;1980;7;Kepler-442b;Purple;ACTIVE;2;2;plasma.shield@spaceforce.gov
+33;Dark Matter;610;8;Alpha Centauri Prime;White;PREPARING;3;3;dark.matter@spaceforce.gov
+34;Light Speed;1420;5;Proxima Centauri b;Grey;COMPLETED;4;4;light.speed@spaceforce.gov
+35;Time Warp;770;10;Planet Y;Yellow;ACTIVE;5;5;time.warp@spaceforce.gov
+36;Asteroid Belt;2650;6;Kepler-442b;Blue;PREPARING;1;1;asteroid.belt@spaceforce.gov
+37;Satellite Orbit;340;9;Alpha Centauri Prime;Red;COMPLETED;2;2;satellite.orbit@spaceforce.gov
+38;Moon Phase;1290;7;Proxima Centauri b;Green;ACTIVE;3;3;moon.phase@spaceforce.gov
+39;Star Map;860;8;Planet Y;Black;PREPARING;4;4;star.map@spaceforce.gov
+40;Deep Space;1560;5;Kepler-442b;Silver;COMPLETED;5;5;deep.space@spaceforce.gov
+41;Cosmic Storm;720;10;Alpha Centauri Prime;Orange;ACTIVE;1;1;cosmic.storm@spaceforce.gov
+42;Galactic Core;2200;6;Proxima Centauri b;Purple;PREPARING;2;2;galactic.core@spaceforge.gov
+43;Binary Star;490;9;Planet Y;White;COMPLETED;3;3;binary.star@spaceforce.gov
+44;Wormhole Gate;1380;7;Kepler-442b;Grey;ACTIVE;4;4;wormhole.gate@spaceforce.gov
+45;Hyperdrive;940;8;Alpha Centauri Prime;Yellow;PREPARING;5;5;hyperdrive@spaceforce.gov
+46;Starship Crew;2950;5;Proxima Centauri b;Blue;COMPLETED;1;1;starship.crew@spaceforce.gov
+47;Planet Hopper;580;10;Planet Y;Red;ACTIVE;2;2;planet.hopper@spaceforce.gov
+48;Space Station;1470;6;Kepler-442b;Green;PREPARING;3;3;space.station@spaceforce.gov
+49;Orbit Tracker;810;9;Alpha Centauri Prime;Black;COMPLETED;4;4;orbit.tracker@spaceforce.gov
+50;Launch Pad;1620;7;Proxima Centauri b;Silver;ACTIVE;5;5;launch.pad@spaceforce.gov
