@@ -21,6 +21,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",
     "jest": "^30.0.5",
+    "sqlite3": "^5.1.7",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
@@ -29,6 +30,7 @@
   "scripts": {
     "start": "cds-serve",
     "build": "cds build && cds-typer",
+    "init:db": "cds deploy --to sqlite:db/spacefarer.db",
     "client:watch": "cds watch --open galactic-spacefarer-adventures-ui/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "imports": {
@@ -36,6 +38,12 @@
   },
   "cds": {
     "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": "db/spacefarer.db"
+        }
+      },
       "auth": {
         "kind": "mocked",
         "users": {

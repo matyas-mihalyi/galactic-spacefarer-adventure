@@ -1,6 +1,7 @@
 # CAP galactic-spacefarer-adventure
 _out
 *.db
+*.db-*
 *.sqlite
 connection.properties
 default-*.json
