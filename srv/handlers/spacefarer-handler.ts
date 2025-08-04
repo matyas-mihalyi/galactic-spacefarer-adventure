@@ -34,16 +34,7 @@ export class SpacefarerHandler {
   }
 
   private static async beforeSpacefarerUpdate(req: cds.Request) {
-    const { collectedStardust, rank_ID } = req.data;
     await this.validateAssociations(req);
-
-    if (rank_ID) {
-      await this.validateRank(collectedStardust, rank_ID);
-    } else {
-      const highestValidRank =
-        await this.findHighestValidRank(collectedStardust);
-      req.data.rank_ID = highestValidRank.ID;
-    }
   }
 
   private static async validateRank(collectedStardust: number, rankId: string) {
@@ -65,12 +56,8 @@ export class SpacefarerHandler {
   }
 
   private static async enhanceWormholeNavigationSkills(): Promise<number> {
-    await Promise.resolve(
-      setTimeout(() => {
-        console.log("Spacefarer completed basic wormhole naviagation training");
-      }, 3000),
-    );
-    return 1;
+    console.log('Spacefarer candidate completed Wormhole Navigation Basic Training')
+    return Promise.resolve(1);
   }
 
   private static async validateAssociations(req: cds.Request) {

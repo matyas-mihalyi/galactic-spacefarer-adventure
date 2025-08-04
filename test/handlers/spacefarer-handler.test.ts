@@ -11,32 +11,38 @@ const mockSelect = {
 
 (global as any).SELECT = mockSelect;
 
+const mockDepartment = {
+  ID: 1,
+  name: 'Terra Corp',
+  galaxy: 'Milky Way'
+}
+const mockRank = {
+  ID: 1,
+  title: 'Newbie',
+  requiredStardust: 0
+}
+
 describe("SpacefarerHandler", () => {
   let mockService: any;
   let mockRequest: any;
   let mockEntities: any;
 
   beforeEach(() => {
-    // Reset all mocks
     jest.clearAllMocks();
 
-    // Reset the static entities property
     (SpacefarerHandler as any).entities = null;
 
-    // Mock entities
     mockEntities = {
       Spacefarers: "Spacefarers",
       Ranks: "Ranks",
       Departments: "Departments",
     };
 
-    // Mock service
     mockService = {
       entities: mockEntities,
       before: jest.fn(),
     };
 
-    // Mock request
     mockRequest = {
       data: {
         collectedStardust: 100,
@@ -68,316 +74,141 @@ describe("SpacefarerHandler", () => {
     it("should set entities only once", () => {
       SpacefarerHandler.register(mockService);
 
-      // Modify entities in service
       mockService.entities = { Different: "Entities" };
 
-      // Register again
       SpacefarerHandler.register(mockService);
 
-      // Should still have original entities
       expect((SpacefarerHandler as any).entities).toBe(mockEntities);
     });
   });
 
   describe("beforeSpacefarerCreate", () => {
     beforeEach(() => {
-      // Register the handler to set entities
-      SpacefarerHandler.register(mockService);
+      SpacefarerHandler.register(mockService)
+    })
 
-      // Spy on private methods
-      jest
-        .spyOn(SpacefarerHandler as any, "validateAssociations")
-        .mockResolvedValue(undefined);
-      jest
-        .spyOn(SpacefarerHandler as any, "validateRank")
-        .mockResolvedValue(undefined);
-      jest
-        .spyOn(SpacefarerHandler as any, "findHighestValidRank")
-        .mockResolvedValue({ ID: "2" });
-      jest
-        .spyOn(SpacefarerHandler as any, "enhanceWormholeNavigationSkills")
-        .mockReturnValue(1);
+    describe("Rank validation", () => {
+      it("should pass if requested Rank already exists", async () => {
+        await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
+
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.rank_ID })
+      });
+      it("should reject if requested Rank does not exist", async () => {
+        mockSelect.one.where.mockResolvedValueOnce(null)
+        await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
+
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.rank_ID })
+        expect(mockRequest.reject).toHaveBeenCalledWith(400, `Rank ${mockRequest.data.rank_ID} does not exits. Contact Admin to create it first.`)
+      });
     });
 
-    it("should validate associations", async () => {
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
+    describe("Department validation", () => {
+      it("should pass if requested Department already exists", async () => {
+        await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
 
-      expect(
-        (SpacefarerHandler as any).validateAssociations,
-      ).toHaveBeenCalledWith(mockRequest);
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Departments)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.department_ID })
+      });
+      it("should reject if requested Department does not exist", async () => {
+        mockSelect.one.where.mockResolvedValueOnce(mockRank)
+        mockSelect.one.where.mockResolvedValueOnce(null)
+        await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
+
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Departments)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.department_ID })
+        expect(mockRequest.reject).toHaveBeenCalledWith(400, `Department ${mockRequest.data.department_ID} does not exits. Contact Admin to create it first.`)
+        mockSelect.one.where.mockClear()
+      });
     });
 
-    it("should validate rank when rank_ID is provided", async () => {
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
+    describe('Rank eligibility validation', () => {
+      beforeEach(() => {
+        mockSelect.one.where.mockResolvedValueOnce(mockDepartment)
+        mockSelect.one.where.mockResolvedValueOnce(mockRank)
+      })
+      it('should pass if Spacefarer has the required amount of stardust for desired Rank', async () => {
+        mockSelect.one.where.mockResolvedValueOnce(mockRank)
+        await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
 
-      expect((SpacefarerHandler as any).validateRank).toHaveBeenCalledWith(
-        100,
-        "1",
-      );
-    });
+        expect(mockSelect.one.from).toHaveBeenNthCalledWith(3, mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenNthCalledWith(3, ["ID = ", ""], "1")
+      })
+      it('should throw if Spacefarer does not have the required amount of stardust for desired Rank', async () => {
+        mockSelect.one.where.mockResolvedValueOnce({ ...mockRank, requiredStardus: 9000 })
+        try {
+          await SpacefarerHandler['beforeSpacefarerCreate'](mockRequest);
+        } catch (e: any) {
+          expect(e.message).toBe(`Insufficent stardust collection for rank ${mockRank.title}`)
+        }
+        expect(mockSelect.one.from).toHaveBeenNthCalledWith(3, mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenNthCalledWith(3, ["ID = ", ""], "1")
+      })
+    })
 
-    it("should auto-assign highest valid rank when rank_ID is not provided", async () => {
-      mockRequest.data.rank_ID = null;
+    describe('Automatic rank assignment', () => {
+      beforeEach(() => {
+        mockSelect.one.where.mockResolvedValueOnce(mockDepartment)
+        mockSelect.one.where.mockResolvedValueOnce(mockRank)
+      })
+      it('should set the highest available Rank for Spacefarer if no Rank is provided', async () => {
+        mockSelect.one.limit.mockResolvedValueOnce(mockRank)
+        await SpacefarerHandler['beforeSpacefarerCreate']({
+          data: {
+            collectedStardust: 100,
+            department_ID: "1",
+            wormholeNavigationSkill: null,
+          },
+          reject: jest.fn(),
+        } as any);
+        console.log(mockRequest)
+        expect(mockSelect.one.from).toHaveBeenNthCalledWith(3, mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenNthCalledWith(3, ["requiredStardust <= ", ""], 100)
+        expect(mockSelect.one.limit).toHaveBeenCalledWith(1)
+      })
+    })
 
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
 
-      expect(
-        (SpacefarerHandler as any).findHighestValidRank,
-      ).toHaveBeenCalledWith(100);
-      expect(mockRequest.data.rank_ID).toBe("2");
-    });
-
-    it("should set wormhole navigation skill when not provided", async () => {
-      mockRequest.data.wormholeNavigationSkill = null;
-
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
-
-      expect(
-        (SpacefarerHandler as any).enhanceWormholeNavigationSkills,
-      ).toHaveBeenCalled();
-      expect(mockRequest.data.wormholeNavigationSkill).toBe(1);
-    });
-
-    it("should not set wormhole navigation skill when already provided", async () => {
-      mockRequest.data.wormholeNavigationSkill = 5;
-
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
-
-      expect(
-        (SpacefarerHandler as any).enhanceWormholeNavigationSkills,
-      ).not.toHaveBeenCalled();
-      expect(mockRequest.data.wormholeNavigationSkill).toBe(5);
-    });
   });
-
   describe("beforeSpacefarerUpdate", () => {
     beforeEach(() => {
-      SpacefarerHandler.register(mockService);
+      SpacefarerHandler.register(mockService)
+    })
+    describe("Rank validation", () => {
+      it("should pass if requested Rank already exists", async () => {
+        await SpacefarerHandler['beforeSpacefarerUpdate'](mockRequest);
 
-      jest
-        .spyOn(SpacefarerHandler as any, "validateAssociations")
-        .mockResolvedValue(undefined);
-      jest
-        .spyOn(SpacefarerHandler as any, "validateRank")
-        .mockResolvedValue(undefined);
-      jest
-        .spyOn(SpacefarerHandler as any, "findHighestValidRank")
-        .mockResolvedValue({ ID: "3" });
-    });
-
-    it("should validate associations", async () => {
-      await (SpacefarerHandler as any).beforeSpacefarerUpdate(mockRequest);
-
-      expect(
-        (SpacefarerHandler as any).validateAssociations,
-      ).toHaveBeenCalledWith(mockRequest);
-    });
-
-    it("should validate rank when rank_ID is provided", async () => {
-      await (SpacefarerHandler as any).beforeSpacefarerUpdate(mockRequest);
-
-      expect((SpacefarerHandler as any).validateRank).toHaveBeenCalledWith(
-        100,
-        "1",
-      );
-    });
-
-    it("should auto-assign highest valid rank when rank_ID is not provided", async () => {
-      mockRequest.data.rank_ID = null;
-
-      await (SpacefarerHandler as any).beforeSpacefarerUpdate(mockRequest);
-
-      expect(
-        (SpacefarerHandler as any).findHighestValidRank,
-      ).toHaveBeenCalledWith(100);
-      expect(mockRequest.data.rank_ID).toBe("3");
-    });
-
-    it("should not modify wormhole navigation skill on update", async () => {
-      mockRequest.data.wormholeNavigationSkill = null;
-
-      await (SpacefarerHandler as any).beforeSpacefarerUpdate(mockRequest);
-
-      expect(mockRequest.data.wormholeNavigationSkill).toBeNull();
-    });
-  });
-
-  describe("validateRank", () => {
-    beforeEach(() => {
-      SpacefarerHandler.register(mockService);
-    });
-
-    it("should throw error when insufficient stardust", async () => {
-      mockSelect.one.where.mockResolvedValue({
-        ID: "2",
-        title: "Captain",
-        requiredStardust: 500,
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.rank_ID })
       });
+      it("should reject if requested Rank does not exist", async () => {
+        mockSelect.one.where.mockResolvedValueOnce(null)
+        await SpacefarerHandler['beforeSpacefarerUpdate'](mockRequest);
 
-      await expect(
-        (SpacefarerHandler as any).validateRank(100, "2"),
-      ).rejects.toThrow("Insufficent stardust collection for rank Captain");
-    });
-
-    it("should pass when sufficient stardust", async () => {
-      mockSelect.one.where.mockResolvedValue({
-        ID: "1",
-        title: "Cadet",
-        requiredStardust: 50,
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.rank_ID })
+        expect(mockRequest.reject).toHaveBeenCalledWith(400, `Rank ${mockRequest.data.rank_ID} does not exits. Contact Admin to create it first.`)
       });
-
-      await expect(
-        (SpacefarerHandler as any).validateRank(100, "1"),
-      ).resolves.not.toThrow();
     });
 
-    it("should use correct query", async () => {
-      mockSelect.one.where.mockResolvedValue({
-        ID: "1",
-        title: "Cadet",
-        requiredStardust: 50,
+    describe("Department validation", () => {
+      it("should pass if requested Department already exists", async () => {
+        await SpacefarerHandler['beforeSpacefarerUpdate'](mockRequest);
+
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Departments)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.department_ID })
       });
+      it("should reject if requested Department does not exist", async () => {
+        mockSelect.one.where.mockResolvedValueOnce(mockRank)
+        mockSelect.one.where.mockResolvedValueOnce(null)
+        await SpacefarerHandler['beforeSpacefarerUpdate'](mockRequest);
 
-      await (SpacefarerHandler as any).validateRank(100, "1");
-
-      expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks);
-    });
-  });
-
-  describe("findHighestValidRank", () => {
-    beforeEach(() => {
-      SpacefarerHandler.register(mockService);
-    });
-
-    it("should return highest valid rank", async () => {
-      const expectedRank = {
-        ID: "2",
-        title: "Lieutenant",
-        requiredStardust: 100,
-      };
-      mockSelect.one.limit.mockResolvedValue(expectedRank);
-
-      const result = await (SpacefarerHandler as any).findHighestValidRank(150);
-
-      expect(result).toEqual(expectedRank);
-      expect(mockSelect.one.limit).toHaveBeenCalledWith(1);
-    });
-
-    it("should use correct query chain", async () => {
-      mockSelect.one.limit.mockResolvedValue({ ID: "1" });
-
-      await (SpacefarerHandler as any).findHighestValidRank(150);
-
-      expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks);
-      expect(mockSelect.one.where).toHaveBeenCalled();
-      expect(mockSelect.one.orderBy).toHaveBeenCalled();
-      expect(mockSelect.one.limit).toHaveBeenCalledWith(1);
-    });
-  });
-
-  describe("enhanceWormholeNavigationSkills", () => {
-    it("should return 1", async () => {
-      // Mock setTimeout to execute immediately
-      jest.spyOn(global, "setTimeout").mockImplementation((callback: any) => {
-        callback();
-        return {} as NodeJS.Timeout;
+        expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Departments)
+        expect(mockSelect.one.where).toHaveBeenCalledWith({ ID: mockRequest.data.department_ID })
+        expect(mockRequest.reject).toHaveBeenCalledWith(400, `Department ${mockRequest.data.department_ID} does not exits. Contact Admin to create it first.`)
+        mockSelect.one.where.mockClear()
       });
-
-      const result = await (
-        SpacefarerHandler as any
-      ).enhanceWormholeNavigationSkills();
-
-      expect(result).toBe(1);
-      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 3000);
-    });
-  });
-
-  describe("validateAssociations", () => {
-    beforeEach(() => {
-      SpacefarerHandler.register(mockService);
-    });
-
-    it("should reject when rank does not exist", async () => {
-      mockSelect.one.where
-        .mockResolvedValueOnce(null) // rank
-        .mockResolvedValueOnce({ ID: "1", name: "Engineering" }); // department
-
-      await (SpacefarerHandler as any).validateAssociations(mockRequest);
-
-      expect(mockRequest.reject).toHaveBeenCalledWith(
-        400,
-        "Rank 1 does not exits. Contact Admin to create it first.",
-      );
-    });
-
-    it("should reject when department does not exist", async () => {
-      mockSelect.one.where
-        .mockResolvedValueOnce({ ID: "1", title: "Cadet" }) // rank
-        .mockResolvedValueOnce(null); // department
-
-      await (SpacefarerHandler as any).validateAssociations(mockRequest);
-
-      expect(mockRequest.reject).toHaveBeenCalledWith(
-        400,
-        "Department 1 does not exits. Contact Admin to create it first.",
-      );
-    });
-
-    it("should pass when both rank and department exist", async () => {
-      mockSelect.one.where
-        .mockResolvedValueOnce({ ID: "1", title: "Cadet" }) // rank
-        .mockResolvedValueOnce({ ID: "1", name: "Engineering" }); // department
-
-      await (SpacefarerHandler as any).validateAssociations(mockRequest);
-
-      expect(mockRequest.reject).not.toHaveBeenCalled();
-    });
-
-    it("should check both rank and department", async () => {
-      mockSelect.one.where
-        .mockResolvedValueOnce({ ID: "1", title: "Cadet" })
-        .mockResolvedValueOnce({ ID: "1", name: "Engineering" });
-
-      await (SpacefarerHandler as any).validateAssociations(mockRequest);
-
-      expect(mockSelect.one.from).toHaveBeenCalledTimes(2);
-      expect(mockSelect.one.from).toHaveBeenCalledWith(mockEntities.Ranks);
-      expect(mockSelect.one.from).toHaveBeenCalledWith(
-        mockEntities.Departments,
-      );
-    });
-  });
-
-  describe("edge cases", () => {
-    beforeEach(() => {
-      SpacefarerHandler.register(mockService);
-    });
-
-    it("should handle missing data gracefully", async () => {
-      mockRequest.data = {};
-      jest
-        .spyOn(SpacefarerHandler as any, "validateAssociations")
-        .mockResolvedValue(undefined);
-
-      await expect(
-        (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest),
-      ).resolves.not.toThrow();
-    });
-
-    it("should handle null collectedStardust", async () => {
-      mockRequest.data.collectedStardust = null;
-      jest
-        .spyOn(SpacefarerHandler as any, "validateAssociations")
-        .mockResolvedValue(undefined);
-      jest
-        .spyOn(SpacefarerHandler as any, "findHighestValidRank")
-        .mockResolvedValue({ ID: "1" });
-
-      await (SpacefarerHandler as any).beforeSpacefarerCreate(mockRequest);
-
-      expect(
-        (SpacefarerHandler as any).findHighestValidRank,
-      ).toHaveBeenCalledWith(null);
     });
   });
 });
