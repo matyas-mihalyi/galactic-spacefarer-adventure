@@ -1,4 +1,6 @@
 import nodemailer, { Transporter, SendMailOptions } from "nodemailer";
+import cds from "@sap/cds";
+const logger = cds.log("email-service");
 
 export class EmailService {
   private static instance: EmailService;
@@ -25,9 +27,9 @@ export class EmailService {
   public async send(mailOptions: SendMailOptions): Promise<void> {
     try {
       const info = await this.transporter.sendMail(mailOptions);
-      console.log(`Email sent: ${info.messageId}`);
+      logger.log(`Email sent: ${info.messageId}`);
     } catch (error) {
-      console.error("Failed to send email:", error);
+      logger.error("Failed to send email:", error);
       throw new Error("Email sending failed");
     }
   }

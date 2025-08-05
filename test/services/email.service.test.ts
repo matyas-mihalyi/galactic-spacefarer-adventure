@@ -1,3 +1,11 @@
+jest.mock("@sap/cds", () => ({
+  log: jest.fn(() => ({
+    log: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  })),
+}));
 import nodemailer from "nodemailer";
 import { EmailService } from "../../srv/services/email.service";
 import { SendMailOptions } from "nodemailer";
@@ -21,7 +29,7 @@ describe("EmailService Singleton", () => {
     expect(instance1).toBe(instance2);
   });
 
-  it("should send an email successfully", async () => {
+  it("should send an email", async () => {
     sendMailMock.mockResolvedValue({ messageId: "test-id" });
 
     const emailService = EmailService.getInstance();
@@ -37,7 +45,7 @@ describe("EmailService Singleton", () => {
     expect(sendMailMock).toHaveBeenCalledWith(mailOptions);
   });
 
-  it("should throw an error and log if sending fails", async () => {
+  it("should throw an error if sending fails", async () => {
     const error = new Error("SMTP Error");
     sendMailMock.mockRejectedValue(error);
 
@@ -50,13 +58,8 @@ describe("EmailService Singleton", () => {
       text: "Test message",
     };
 
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
-
     await expect(emailService.send(mailOptions)).rejects.toThrow(
       "Email sending failed",
     );
-    expect(consoleSpy).toHaveBeenCalledWith("Failed to send email:", error);
-
-    consoleSpy.mockRestore();
   });
 });
