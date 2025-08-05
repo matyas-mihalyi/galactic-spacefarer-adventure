@@ -1,27 +1,17 @@
-# Getting Started
+# Galactic Spacefarer Adventure
+## Run locally
+`npm ci && npm run init:db && npm start`
+## Test users
+* Admin user with read and write access:
 
-Welcome to your new project.
+  username: **admin**
+  password: **password**
+* User with read access from Planet "Kepler-442b":
 
-It contains these folders and files, following our recommended project layout:
+  username: **user1**
+  password: **password**
+* User with read access from Planet "Planet Y":
 
-| File or Folder | Purpose                              |
-| -------------- | ------------------------------------ |
-| `app/`         | content for UI frontends goes here   |
-| `db/`          | your domain models and data go here  |
-| `srv/`         | your service models and code go here |
-| `package.json` | project metadata and configuration   |
-| `readme.md`    | this getting started guide           |
+  username: **user2**
+  password: **password**
 
-## Next Steps
-
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
-
-## Learn More
-
-Learn more at https://cap.cloud.sap/docs/get-started/.
-
-## Notes
-
-https://github.com/SAP-samples/cap-sflight/tree/main/app
